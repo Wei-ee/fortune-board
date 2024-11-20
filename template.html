@@ -16,7 +16,7 @@
     }
     .content {
       text-align: center;
-      background-image: url('reference.png'); /* 替换为背景图片地址 */
+      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       width: 300px;
       height: 400px;
@@ -29,8 +29,9 @@
       overflow: hidden;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-    .hidden {
-      display: none;
+    img {
+      border-radius: 10px; /* 保留图片圆角效果 */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
@@ -39,8 +40,6 @@
     <h1 id="name">属于用户的转运签</h1>
     <p id="blessing">祝您好运!</p>
   </div>
-  <canvas id="canvas" class="hidden"></canvas> <!-- 隐藏的 canvas -->
-  
   <script>
     // 从 URL 查询参数中提取用户信息
     const urlParams = new URLSearchParams(window.location.search);
@@ -51,15 +50,15 @@
     document.getElementById('name').textContent = `属于${name}的转运签`;
     document.getElementById('blessing').textContent = blessing;
 
-    // 使用 html2canvas 将页面内容渲染为图片
+    // 使用 html2canvas 渲染内容为图片
     const content = document.getElementById('content');
-    const canvas = document.getElementById('canvas');
 
-    html2canvas(content).then((renderedCanvas) => {
-      // 替换页面内容为图片
-      document.body.innerHTML = ''; // 清空原内容
-      renderedCanvas.style.borderRadius = "10px"; // 保留圆角效果
-      document.body.appendChild(renderedCanvas);
+    html2canvas(content).then((canvas) => {
+      const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
+      const img = document.createElement("img"); // 创建图片元素
+      img.src = imageUrl;
+      document.body.innerHTML = ""; // 清空原页面内容
+      document.body.appendChild(img); // 显示生成的图片
     });
   </script>
 </body>

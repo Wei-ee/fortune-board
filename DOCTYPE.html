@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>转运签</title>
+  <style>
+    body {
+      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
+      background-size: cover;
+      text-align: center;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .content {
+      padding-top: 20%;
+    }
+    h1 {
+      font-size: 36px;
+    }
+    p {
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <h1 id="name">属于用户的转运签</h1>
+    <p id="blessing">祝您好运!</p>
+  </div>
+
+  <script>
+    // 从 URL 查询参数中提取用户信息
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name') || '用户'; // 默认名字为 "用户"
+    const blessing = urlParams.get('blessing') || '祝您好运!';
+
+    // 动态替换页面内容
+    document.getElementById('name').textContent = `属于${name}的转运签`;
+    document.getElementById('blessing').textContent = blessing;
+  </script>
+</body>
+</html>

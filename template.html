@@ -4,36 +4,33 @@
   <title>转运签</title>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
-    body {
-      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
-      background-size: cover;
-      text-align: center;
-      color: white;
-      font-family: Arial, sans-serif;
+    body, html {
       margin: 0;
       padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f3f3f3;
+      height: 100vh;
+      font-family: Arial, sans-serif;
     }
     .content {
-      padding-top: 20%;
-    }
-    h1 {
-      font-size: 36px;
-    }
-    p {
-      font-size: 24px;
-    }
-    #saveButton {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 20px;
-      background-color: #007bff;
+      text-align: center;
+      background-image: url('reference.png'); /* 替换为背景图片地址 */
+      background-size: cover;
+      width: 300px;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -42,27 +39,27 @@
     <h1 id="name">属于用户的转运签</h1>
     <p id="blessing">祝您好运!</p>
   </div>
-  <button id="saveButton">保存为图片</button>
-
+  <canvas id="canvas" class="hidden"></canvas> <!-- 隐藏的 canvas -->
+  
   <script>
     // 从 URL 查询参数中提取用户信息
     const urlParams = new URLSearchParams(window.location.search);
-    const name = urlParams.get('name') || '用户'; // 默认名字为 "用户"
+    const name = urlParams.get('name') || '用户'; // 默认名字
     const blessing = urlParams.get('blessing') || '祝您好运!';
 
-    // 动态替换页面内容
+    // 动态替换内容
     document.getElementById('name').textContent = `属于${name}的转运签`;
     document.getElementById('blessing').textContent = blessing;
 
-    // 保存为图片功能
-    document.getElementById('saveButton').addEventListener('click', () => {
-      const content = document.getElementById('content');
-      html2canvas(content).then((canvas) => {
-        const link = document.createElement('a');
-        link.download = `${name}_转运签.png`; // 图片保存名称
-        link.href = canvas.toDataURL();
-        link.click();
-      });
+    // 使用 html2canvas 将页面内容渲染为图片
+    const content = document.getElementById('content');
+    const canvas = document.getElementById('canvas');
+
+    html2canvas(content).then((renderedCanvas) => {
+      // 替换页面内容为图片
+      document.body.innerHTML = ''; // 清空原内容
+      renderedCanvas.style.borderRadius = "10px"; // 保留圆角效果
+      document.body.appendChild(renderedCanvas);
     });
   </script>
 </body>

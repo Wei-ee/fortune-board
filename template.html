@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>转运签</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     body {
       background-image: url('reference.png'); /* 替换为实际背景图片地址 */
@@ -21,13 +22,27 @@
     p {
       font-size: 24px;
     }
+    #saveButton {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
-  <div class="content">
+  <div class="content" id="content">
     <h1 id="name">属于用户的转运签</h1>
     <p id="blessing">祝您好运!</p>
   </div>
+  <button id="saveButton">保存为图片</button>
 
   <script>
     // 从 URL 查询参数中提取用户信息
@@ -38,6 +53,17 @@
     // 动态替换页面内容
     document.getElementById('name').textContent = `属于${name}的转运签`;
     document.getElementById('blessing').textContent = blessing;
+
+    // 保存为图片功能
+    document.getElementById('saveButton').addEventListener('click', () => {
+      const content = document.getElementById('content');
+      html2canvas(content).then((canvas) => {
+        const link = document.createElement('a');
+        link.download = `${name}_转运签.png`; // 图片保存名称
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    });
   </script>
 </body>
 </html>

@@ -18,8 +18,7 @@
       text-align: center;
       background-image: url('reference.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
-      width: 300px;
-      height: 400px;
+      background-repeat: no-repeat;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -41,6 +40,15 @@
     <p id="blessing">祝您好运!</p>
   </div>
   <script>
+    // 获取屏幕宽高，适配不同手机尺寸
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    // 设置内容尺寸动态适配屏幕
+    const content = document.getElementById('content');
+    content.style.width = `${screenWidth * 0.9}px`; // 占屏幕 90% 宽度
+    content.style.height = `${screenHeight * 0.8}px`; // 占屏幕 80% 高度
+
     // 从 URL 查询参数中提取用户信息
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户'; // 默认名字
@@ -51,12 +59,12 @@
     document.getElementById('blessing').textContent = blessing;
 
     // 使用 html2canvas 渲染内容为图片
-    const content = document.getElementById('content');
-
-    html2canvas(content).then((canvas) => {
+    html2canvas(content, { scale: 2 }).then((canvas) => {
       const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
       const img = document.createElement("img"); // 创建图片元素
       img.src = imageUrl;
+      img.style.width = "100%"; // 让图片适配屏幕宽度
+      img.style.height = "auto"; // 保持宽高比
       document.body.innerHTML = ""; // 清空原页面内容
       document.body.appendChild(img); // 显示生成的图片
     });

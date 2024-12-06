@@ -19,7 +19,7 @@
       background-size: cover;
       background-position: center;
       width: 100vw;
-      height: calc(100vw * 16 / 9); /* 9:16 的比例 */
+      height: calc(100vw * 16 / 9); /* 强制为 9:16 的比例 */
       max-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -57,7 +57,7 @@
     html2canvas(document.getElementById('content'), {
       scale: 2,
       width: window.innerWidth,
-      height: window.innerWidth * 16 / 9 // 设置输出比例为 9:16
+      height: window.innerWidth * 16 / 9 // 强制输出为 9:16 的比例
     }).then((canvas) => {
       const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
       const img = document.createElement("img"); // 创建图片元素

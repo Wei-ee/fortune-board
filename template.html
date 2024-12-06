@@ -43,9 +43,6 @@
     <p id="blessing">祝您好运!</p>
   </div>
   <script>
-    // 确保图片只生成一次
-    let imageGenerated = false;
-
     // 从 URL 查询参数中提取用户信息
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户'; // 默认名字
@@ -57,32 +54,22 @@
 
     // 使用 html2canvas 渲染内容为图片
     window.onload = function () {
-      if (!imageGenerated) {
-        imageGenerated = true; // 标记图片已生成
-        html2canvas(document.getElementById('content'), {
-          scale: 2,
-          useCORS: true // 允许跨域加载图片
-        }).then((canvas) => {
-          const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
-          const img = new Image(); // 使用 Image 对象
-
-          img.src = imageUrl;
-
-          // 等待图片加载完成后再显示
-          img.onload = function () {
-            img.style.position = "absolute";
-            img.style.top = "0";
-            img.style.left = "0";
-            img.style.width = "100vw"; // 让图片适配屏幕宽度
-            img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
-            img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
-
-            // 清空原页面内容并显示生成的图片
-            document.body.innerHTML = ""; // 清空原页面内容
-            document.body.appendChild(img); // 显示生成的图片
-          };
-        });
-      }
+      html2canvas(document.getElementById('content'), {
+        scale: 2,
+        useCORS: true // 允许跨域加载图片
+      }).then((canvas) => {
+        const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
+        const img = new Image(); // 使用 Image 对象
+        img.src = imageUrl;
+        img.style.position = "absolute";
+        img.style.top = "0";
+        img.style.left = "0";
+        img.style.width = "100vw"; // 让图片适配屏幕宽度
+        img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
+        img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
+        document.body.innerHTML = ""; // 清空原页面内容
+        document.body.appendChild(img); // 显示生成的图片
+      });
     };
   </script>
 </body>

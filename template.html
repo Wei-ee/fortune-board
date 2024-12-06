@@ -15,11 +15,11 @@
     }
     .content {
       text-align: center;
-      background-image: url('1.png'); /* 替换为实际背景图片地址 */
+      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       background-position: center;
-      width: 1080px; /* 固定宽度 */
-      height: 1920px; /* 固定高度，保持9:16比例 */
+      width: 100vw;
+      height: 100vh; /* 确保内容高度为全屏 */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -54,9 +54,8 @@
 
     // 使用 html2canvas 渲染内容为图片
     html2canvas(document.getElementById('content'), {
-      scale: 1,
-      width: 1080, // 固定宽度
-      height: 1920 // 固定高度，确保为 9:16 比例
+      scale: 2,
+      useCORS: true // 允许跨域加载图片
     }).then((canvas) => {
       const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
       const img = document.createElement("img"); // 创建图片元素

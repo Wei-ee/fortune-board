@@ -15,25 +15,17 @@
     }
     .content {
       text-align: center;
-      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
+      background-image: url('1.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       background-position: center;
       width: 100vw;
-      height: 150vh; /* 将高度调整为150vh，以确保完全覆盖 */
+      height: 100vh; /* 将高度调整为100vh，适应屏幕高度 */
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       color: white;
       overflow: hidden;
-    }
-    img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
   </style>
 </head>
@@ -61,14 +53,11 @@
         const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
         const img = new Image(); // 使用 Image 对象
         img.src = imageUrl;
-        img.style.position = "absolute";
-        img.style.top = "0";
-        img.style.left = "0";
         img.style.width = "100vw"; // 让图片适配屏幕宽度
-        img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
-        img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
-        document.body.innerHTML = ""; // 清空原页面内容
-        document.body.appendChild(img); // 显示生成的图片
+        img.style.height = "auto"; // 保持高度自适应比例
+        img.style.display = "block";
+        img.style.margin = "0 auto";
+        document.body.appendChild(img); // 将生成的图片添加到页面上，用户可以长按保存
       });
     };
   </script>

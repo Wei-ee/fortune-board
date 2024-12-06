@@ -12,6 +12,9 @@
       background-color: #f3f3f3;
       font-family: Arial, sans-serif;
       overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .content {
       text-align: center;
@@ -37,12 +40,26 @@
     }
   </style>
 </head>
-<body>
+<body onclick="requestFullScreen();">
   <div class="content" id="content">
     <h1 id="name">属于用户的转运签</h1>
     <p id="blessing">祝您好运!</p>
   </div>
   <script>
+    // 使网页进入全屏模式的函数
+    function requestFullScreen() {
+      const docElm = document.documentElement;
+      if (docElm.requestFullscreen) {
+        docElm.requestFullscreen();
+      } else if (docElm.mozRequestFullScreen) { // Firefox
+        docElm.mozRequestFullScreen();
+      } else if (docElm.webkitRequestFullScreen) { // Chrome, Safari and Opera
+        docElm.webkitRequestFullScreen();
+      } else if (docElm.msRequestFullscreen) { // IE/Edge
+        docElm.msRequestFullscreen();
+      }
+    }
+
     // 从 URL 查询参数中提取用户信息
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户'; // 默认名字
@@ -69,6 +86,11 @@
       document.body.innerHTML = ""; // 清空原页面内容
       document.body.appendChild(img); // 显示生成的图片
     });
+
+    // 页面加载后自动进入全屏
+    window.onload = function () {
+      requestFullScreen();
+    };
   </script>
 </body>
 </html>

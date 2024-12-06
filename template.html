@@ -15,12 +15,11 @@
     }
     .content {
       text-align: center;
-      background-image: url('background.png'); /* 替换为实际背景图片地址 */
+      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       background-position: center;
       width: 100vw;
-      height: calc(100vw * 16 / 9); /* 强制保持9:16比例 */
-      max-height: 100vh;
+      height: 100vh; /* 动态调整为全屏高度 */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -58,33 +57,6 @@
       }
     }
 
-    // 延迟函数，确保内容完全加载
-    function delay(time) {
-      return new Promise(resolve => setTimeout(resolve, time));
-    }
-
-    async function generateImage() {
-      await delay(500); // 延迟 500ms 确保页面完成加载以及全屏生效
-
-      // 使用 html2canvas 渲染内容为图片
-      html2canvas(document.getElementById('content'), {
-        scale: 2,
-        useCORS: true // 允许跨域加载图片
-      }).then((canvas) => {
-        const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
-        const img = document.createElement("img"); // 创建图片元素
-        img.src = imageUrl;
-        img.style.position = "absolute";
-        img.style.top = "0";
-        img.style.left = "0";
-        img.style.width = "100vw"; // 让图片适配屏幕宽度
-        img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
-        img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
-        document.body.innerHTML = ""; // 清空原页面内容
-        document.body.appendChild(img); // 显示生成的图片
-      });
-    }
-
     // 从 URL 查询参数中提取用户信息
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户'; // 默认名字
@@ -94,11 +66,26 @@
     document.getElementById('name').textContent = `属于${name}的转运签`;
     document.getElementById('blessing').textContent = blessing;
 
-    // 页面加载后尝试进入全屏并生成图片
-    window.onload = function () {
-      requestFullScreen();
-      generateImage();
-    };
+    // 使用 html2canvas 渲染内容为图片
+    html2canvas(document.getElementById('content'), {
+      scale: 2,
+      useCORS: true,
+      width: window.innerWidth,
+      height: window.innerHeight // 动态调整高度为窗口的实际高度
+    }).then((canvas) => {
+      const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
+      const img = document.createElement("img"); // 创建图片元素
+      img.src = imageUrl;
+      img.style.position = "absolute";
+      img.style.top = "0";
+      img.style.left = "0";
+      img.style.width = "100vw"; // 让图片适配屏幕宽度
+      img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
+      img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
+      document.body.innerHTML = ""; // 清空原页面内容
+      document.body.appendChild(img); // 显示生成的图片
+      requestFullScreen(); // 尝试进入全屏模式
+    });
   </script>
 </body>
 </html>

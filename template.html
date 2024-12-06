@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>转运签</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     body, html {
       margin: 0;
@@ -14,11 +15,11 @@
     }
     .content {
       text-align: center;
-      background-image: url('1.png'); /* 替换为实际背景图片地址 */
+      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       background-position: center;
       width: 100vw;
-      height: 100vh; /* 将高度调整为100vh，适应屏幕高度 */
+      height: 150vh; /* 将高度调整为150vh，以确保完全覆盖 */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -42,6 +43,32 @@
     // 动态替换内容
     document.getElementById('name').textContent = `属于${name}的转运签`;
     document.getElementById('blessing').textContent = blessing;
+
+    // 使用 html2canvas 渲染内容为图片并提供下载选项
+    window.onload = function () {
+      html2canvas(document.getElementById('content'), {
+        scale: 2,
+        useCORS: true // 允许跨域加载图片
+      }).then((canvas) => {
+        const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
+        
+        // 添加下载按钮
+        const downloadButton = document.createElement('a');
+        downloadButton.href = imageUrl;
+        downloadButton.download = '转运签.png';
+        downloadButton.textContent = '下载图片';
+        downloadButton.style.position = 'absolute';
+        downloadButton.style.bottom = '20px';
+        downloadButton.style.left = '50%';
+        downloadButton.style.transform = 'translateX(-50%)';
+        downloadButton.style.padding = '10px 20px';
+        downloadButton.style.backgroundColor = '#fff';
+        downloadButton.style.color = '#000';
+        downloadButton.style.textDecoration = 'none';
+        downloadButton.style.borderRadius = '5px';
+        document.body.appendChild(downloadButton);
+      });
+    };
   </script>
 </body>
 </html>

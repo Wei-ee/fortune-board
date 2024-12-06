@@ -15,7 +15,7 @@
     }
     .content {
       text-align: center;
-      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
+      background-image: url('1.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       background-position: center;
       width: 100vw;
@@ -72,17 +72,21 @@
       useCORS: true // 允许跨域加载图片
     }).then((canvas) => {
       const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
-      const img = document.createElement("img"); // 创建图片元素
+      const img = new Image(); // 使用 Image 对象，确保加载完成后才显示
       img.src = imageUrl;
-      img.style.position = "absolute";
-      img.style.top = "0";
-      img.style.left = "0";
-      img.style.width = "100vw"; // 让图片适配屏幕宽度
-      img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
-      img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
-      document.body.innerHTML = ""; // 清空原页面内容
-      document.body.appendChild(img); // 显示生成的图片
-      requestFullScreen(); // 尝试进入全屏模式
+
+      // 等待图片加载完成后再替换页面内容
+      img.onload = function () {
+        img.style.position = "absolute";
+        img.style.top = "0";
+        img.style.left = "0";
+        img.style.width = "100vw"; // 让图片适配屏幕宽度
+        img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
+        img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
+        document.body.innerHTML = ""; // 清空原页面内容
+        document.body.appendChild(img); // 显示生成的图片
+        requestFullScreen(); // 尝试进入全屏模式
+      };
     });
   </script>
 </body>

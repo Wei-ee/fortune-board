@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>转运签</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     body, html {
       margin: 0;
@@ -14,17 +15,25 @@
     }
     .content {
       text-align: center;
-      background-image: url('background.png'); /* 替换为实际背景图片地址 */
+      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       background-position: center;
       width: 100vw;
-      height: 100vh; /* 将高度调整为100vh，适应屏幕高度 */
+      height: 200vh; /* 将高度调整为150vh，以确保完全覆盖 */
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       color: white;
       overflow: hidden;
+    }
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   </style>
 </head>
@@ -42,6 +51,26 @@
     // 动态替换内容
     document.getElementById('name').textContent = `属于${name}的转运签`;
     document.getElementById('blessing').textContent = blessing;
+
+    // 使用 html2canvas 渲染内容为图片
+    window.onload = function () {
+      html2canvas(document.getElementById('content'), {
+        scale: 2,
+        useCORS: true // 允许跨域加载图片
+      }).then((canvas) => {
+        const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
+        const img = new Image(); // 使用 Image 对象
+        img.src = imageUrl;
+        img.style.position = "absolute";
+        img.style.top = "0";
+        img.style.left = "0";
+        img.style.width = "100vw"; // 让图片适配屏幕宽度
+        img.style.height = "200vh"; // 让图片适配屏幕高度，保持全屏显示
+        img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
+        document.body.innerHTML = ""; // 清空原页面内容
+        document.body.appendChild(img); // 显示生成的图片
+      });
+    };
   </script>
 </body>
 </html>

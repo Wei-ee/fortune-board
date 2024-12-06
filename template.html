@@ -15,7 +15,7 @@
     }
     .content {
       text-align: center;
-      background-image: url('background.png'); /* 替换为实际背景图片地址 */
+      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       background-position: center;
       width: 100vw;
@@ -54,7 +54,11 @@
     document.getElementById('blessing').textContent = blessing;
 
     // 使用 html2canvas 渲染内容为图片
-    html2canvas(document.getElementById('content'), { scale: 2 }).then((canvas) => {
+    html2canvas(document.getElementById('content'), {
+      scale: 2,
+      width: window.innerWidth,
+      height: window.innerWidth * 16 / 9 // 设置输出比例为 9:16
+    }).then((canvas) => {
       const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
       const img = document.createElement("img"); // 创建图片元素
       img.src = imageUrl;

@@ -54,22 +54,27 @@
 
     // 使用 html2canvas 渲染内容为图片
     window.onload = function () {
-      html2canvas(document.getElementById('content'), {
-        scale: 2,
-        useCORS: true // 允许跨域加载图片
-      }).then((canvas) => {
-        const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
-        const img = new Image(); // 使用 Image 对象
-        img.src = imageUrl;
-        img.style.position = "absolute";
-        img.style.top = "0";
-        img.style.left = "0";
-        img.style.width = "100vw"; // 让图片适配屏幕宽度
-        img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
-        img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
-        document.body.innerHTML = ""; // 清空原页面内容
-        document.body.appendChild(img); // 显示生成的图片
-      });
+      if (!document.querySelector('.generated-image')) {
+        html2canvas(document.getElementById('content'), {
+          scale: 2,
+          useCORS: true // 允许跨域加载图片
+        }).then((canvas) => {
+          const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
+          const img = new Image(); // 使用 Image 对象
+          img.src = imageUrl;
+          img.classList.add('generated-image'); // 添加生成图片的类，确保只添加一次
+          img.style.position = "absolute";
+          img.style.top = "0";
+          img.style.left = "0";
+          img.style.width = "100vw"; // 让图片适配屏幕宽度
+          img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
+          img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
+
+          // 隐藏原始内容并显示生成的图片
+          document.getElementById('content').style.display = 'none';
+          document.body.appendChild(img); // 显示生成的图片
+        });
+      }
     };
   </script>
 </body>

@@ -15,7 +15,7 @@
     }
     .content {
       text-align: center;
-      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
+      background-image: url('1.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       background-position: center;
       width: 100vw;
@@ -43,20 +43,6 @@
     <p id="blessing">祝您好运!</p>
   </div>
   <script>
-    // 使网页进入全屏模式的函数
-    function requestFullScreen() {
-      const docElm = document.documentElement;
-      if (docElm.requestFullscreen) {
-        docElm.requestFullscreen();
-      } else if (docElm.mozRequestFullScreen) { // Firefox
-        docElm.mozRequestFullScreen();
-      } else if (docElm.webkitRequestFullScreen) { // Chrome, Safari and Opera
-        docElm.webkitRequestFullScreen();
-      } else if (docElm.msRequestFullscreen) { // IE/Edge
-        docElm.msRequestFullscreen();
-      }
-    }
-
     // 从 URL 查询参数中提取用户信息
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户'; // 默认名字
@@ -67,27 +53,33 @@
     document.getElementById('blessing').textContent = blessing;
 
     // 使用 html2canvas 渲染内容为图片
-    html2canvas(document.getElementById('content'), {
-      scale: 2,
-      useCORS: true // 允许跨域加载图片
-    }).then((canvas) => {
-      const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
-      const img = new Image(); // 使用 Image 对象，确保加载完成后才显示
-      img.src = imageUrl;
+    window.onload = function () {
+      html2canvas(document.getElementById('content'), {
+        scale: 2,
+        useCORS: true // 允许跨域加载图片
+      }).then((canvas) => {
+        // 将生成的截图作为图片显示
+        const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
+        const img = new Image(); // 使用 Image 对象
+        img.src = imageUrl;
 
-      // 等待图片加载完成后再替换页面内容
-      img.onload = function () {
-        img.style.position = "absolute";
-        img.style.top = "0";
-        img.style.left = "0";
-        img.style.width = "100vw"; // 让图片适配屏幕宽度
-        img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
-        img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
-        document.body.innerHTML = ""; // 清空原页面内容
-        document.body.appendChild(img); // 显示生成的图片
-        requestFullScreen(); // 尝试进入全屏模式
-      };
-    });
+        // 等待图片加载完成后再显示
+        img.onload = function () {
+          img.style.position = "absolute";
+          img.style.top = "0";
+          img.style.left = "0";
+          img.style.width = "100vw"; // 让图片适配屏幕宽度
+          img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
+          img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
+
+          // 隐藏原始内容
+          document.getElementById('content').style.display = 'none';
+          
+          // 显示生成的图片
+          document.body.appendChild(img);
+        };
+      });
+    };
   </script>
 </body>
 </html>

@@ -7,12 +7,14 @@
     body, html {
       margin: 0;
       padding: 0;
+      width: 100%;
+      height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
       background-color: #f3f3f3;
-      height: 100vh;
       font-family: Arial, sans-serif;
+      overflow: hidden;
     }
     .content {
       text-align: center;
@@ -24,13 +26,14 @@
       justify-content: center;
       align-items: center;
       color: white;
-      border-radius: 10px;
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     img {
-      border-radius: 10px; /* 保留图片圆角效果 */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
     }
   </style>
 </head>
@@ -40,15 +43,6 @@
     <p id="blessing">祝您好运!</p>
   </div>
   <script>
-    // 获取屏幕宽高，适配不同手机尺寸
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-
-    // 设置内容尺寸动态适配屏幕
-    const content = document.getElementById('content');
-    content.style.width = `${screenWidth * 0.9}px`; // 占屏幕 90% 宽度
-    content.style.height = `${screenHeight * 0.8}px`; // 占屏幕 80% 高度
-
     // 从 URL 查询参数中提取用户信息
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户'; // 默认名字
@@ -59,12 +53,13 @@
     document.getElementById('blessing').textContent = blessing;
 
     // 使用 html2canvas 渲染内容为图片
-    html2canvas(content, { scale: 2 }).then((canvas) => {
+    html2canvas(document.getElementById('content'), { scale: 2 }).then((canvas) => {
       const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
       const img = document.createElement("img"); // 创建图片元素
       img.src = imageUrl;
-      img.style.width = "100%"; // 让图片适配屏幕宽度
-      img.style.height = "auto"; // 保持宽高比
+      img.style.width = "100vw"; // 让图片适配屏幕宽度
+      img.style.height = "100vh"; // 让图片适配屏幕高度，保持全屏显示
+      img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
       document.body.innerHTML = ""; // 清空原页面内容
       document.body.appendChild(img); // 显示生成的图片
     });

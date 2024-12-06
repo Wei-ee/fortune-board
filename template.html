@@ -12,17 +12,15 @@
       background-color: #f3f3f3;
       font-family: Arial, sans-serif;
       overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
     .content {
       text-align: center;
-      background-image: url('background.png'); /* 替换为实际背景图片地址 */
+      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       background-position: center;
       width: 100vw;
-      height: 100vh; /* 确保内容高度为全屏 */
+      height: calc(100vw * 16 / 9); /* 强制保持9:16比例 */
+      max-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -40,7 +38,7 @@
     }
   </style>
 </head>
-<body onclick="requestFullScreen();">
+<body>
   <div class="content" id="content">
     <h1 id="name">属于用户的转运签</h1>
     <p id="blessing">祝您好运!</p>
@@ -85,12 +83,8 @@
       img.style.objectFit = "cover"; // 确保图片覆盖整个屏幕
       document.body.innerHTML = ""; // 清空原页面内容
       document.body.appendChild(img); // 显示生成的图片
+      requestFullScreen(); // 尝试进入全屏模式
     });
-
-    // 页面加载后自动进入全屏
-    window.onload = function () {
-      requestFullScreen();
-    };
   </script>
 </body>
 </html>

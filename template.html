@@ -15,7 +15,7 @@
     }
     .content {
       text-align: center;
-      background-image: url('1.png'); /* 替换为实际背景图片地址 */
+      background-image: url('reference.png'); /* 替换为实际背景图片地址 */
       background-size: cover;
       background-position: center;
       width: 100vw;
@@ -54,9 +54,12 @@
         const img = new Image(); // 使用 Image 对象
         img.src = imageUrl;
         img.style.width = "100vw"; // 让图片适配屏幕宽度
-        img.style.height = "auto"; // 保持高度自适应比例
+        img.style.height = "100vh"; // 保持图片高度适配屏幕高度
         img.style.display = "block";
         img.style.margin = "0 auto";
+        img.setAttribute('alt', '生成的转运签图片');
+        img.setAttribute('draggable', 'false');
+        document.body.innerHTML = ""; // 清空页面内容
         document.body.appendChild(img); // 将生成的图片添加到页面上，用户可以长按保存
       });
     };

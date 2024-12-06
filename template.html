@@ -56,8 +56,8 @@
     // 使用 html2canvas 渲染内容为图片
     html2canvas(document.getElementById('content'), {
       scale: 2,
-      width: window.innerWidth,
-      height: window.innerWidth * 16 / 9 // 强制输出为 9:16 的比例
+      width: 1080, // 固定为 1080px 宽度
+      height: 1920 // 9:16 比例的高度，确保生成的图片符合标准手机壁纸比例
     }).then((canvas) => {
       const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
       const img = document.createElement("img"); // 创建图片元素

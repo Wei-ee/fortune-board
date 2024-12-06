@@ -84,6 +84,8 @@
       document.body.innerHTML = ""; // 清空原页面内容
       document.body.appendChild(img); // 显示生成的图片
       requestFullScreen(); // 尝试进入全屏模式
+      // 尝试跳转到用户的默认浏览器
+      window.location.href = imageUrl;
     });
   </script>
 </body>

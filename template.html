@@ -10,25 +10,43 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #f3f3f3;
+      background-color: #000; /* 防止图片外有白边 */
     }
     .content {
-      text-align: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
     }
-    img {
-      max-width: 80%;
-      height: auto;
+    .content img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 确保图片充满屏幕并裁剪 */
+      z-index: 1;
+    }
+    .content h1 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      color: white;
+      font-size: 3rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="content">
-    <h1 id="name"></h1>
     <img id="type-image" src="" alt="签类型图片">
+    <h1 id="name"></h1>
   </div>
   <script>
     // 从 URL 查询参数中提取用户信息
@@ -49,7 +67,7 @@
       "类型5": "work.jpg",
       "类型6": "success.jpg"
     };
-    typeImage.src = imageUrlMap[userType] || "default.jpg"; // 加载图片或显示默认图片
+    typeImage.src = imageUrlMap[userType] || "default.jpg"; // 设置默认图片
   </script>
 </body>
 </html>

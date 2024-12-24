@@ -19,30 +19,23 @@
       position: relative;
       width: 100%;
       height: 100%;
-      overflow: hidden;
-    }
-    canvas {
-      display: none;
-    }
-    .download-btn {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      padding: 10px 20px;
-      background-color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-size: cover; /* 确保图片充满屏幕 */
+      background-position: center; /* 居中显示图片 */ 
+      background-repeat: no-repeat; /* 不重复图片 */ 
+      color: white;
+      font-size: calc((89 / 1920) * 100vh); /* 根据视口大小调整字体 */
+      font-family: sans-serif;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="content">
-    <canvas id="canvas"></canvas>
-    <button class="download-btn" id="download-btn">下载图片</button>
+  <div class="content" id="content">
+    用户名加载中...
   </div>
   <script>
     // 从 URL 查询参数中提取用户信息
@@ -50,7 +43,7 @@
     const name = urlParams.get('name') || '用户'; // 用户名
     const userType = urlParams.get('type') || '类型1'; // 用户选择的类型
 
-    // 根据类型加载图片
+    // 根据类型选择背景图片
     const imageUrlMap = {
       "类型1": "health.jpg",
       "类型2": "love.jpg",
@@ -61,39 +54,10 @@
     };
     const imageUrl = imageUrlMap[userType] || "default.jpg";
 
-    // 获取 canvas 和上下文
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-
-    // 加载图片和绘制内容
-    const img = new Image();
-    img.src = imageUrl;
-    img.onload = () => {
-      // 设置 canvas 尺寸
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      // 绘制图片
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-      // 绘制文字
-      ctx.fillStyle = 'white';
-      ctx.font = `${Math.round(canvas.height * 0.05)}px sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      const textX = canvas.width * 0.5;
-      const textY = canvas.height * 0.5;
-      ctx.fillText(name, textX, textY);
-    };
-
-    // 下载按钮功能
-    const downloadBtn = document.getElementById('download-btn');
-    downloadBtn.addEventListener('click', () => {
-      const link = document.createElement('a');
-      link.download = `${name}_${userType}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
+    // 动态设置背景和用户名
+    const contentDiv = document.getElementById('content');
+    contentDiv.style.backgroundImage = `url('${imageUrl}')`;
+    contentDiv.textContent = name;
   </script>
 </body>
 </html>

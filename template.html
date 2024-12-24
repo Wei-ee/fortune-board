@@ -11,16 +11,15 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #000;
+      background-color: #000; /* 防止白边 */
     }
     .content {
       position: relative;
-      width: 1080px;
-      height: 1920px;
+      width: 1080px; /* 根据背景图片的原始宽度设置 */
+      height: 1920px; /* 根据背景图片的原始高度设置 */
       overflow: hidden;
     }
     .content img {
@@ -34,30 +33,16 @@
     }
     .content h1 {
       position: absolute;
-      left: 408px;
-      top: 578px;
-      width: 380px;
-      height: 89px;
-      font-size: 48px;
-      line-height: 89px;
+      left: 408px; /* 按背景图片的原始尺寸设置 */
+      top: 578px;  /* 按背景图片的原始尺寸设置 */
+      width: 380px; /* 按背景图片的原始尺寸设置 */
+      height: 89px;  /* 按背景图片的原始尺寸设置 */
+      font-size: 48px; /* 字体大小 */
+      line-height: 89px; /* 保持垂直居中 */
       color: white;
       text-align: center;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
       z-index: 2;
-    }
-    #save-btn {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 20px;
-      font-size: 16px;
-      color: white;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 3;
     }
   </style>
 </head>
@@ -66,9 +51,8 @@
     <img id="type-image" src="" alt="签类型图片">
     <h1 id="name"></h1>
   </div>
-  <button id="save-btn">保存图片</button>
   <script>
-    // 从 URL 查询参数中提取用户信息
+    // 获取 URL 查询参数
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户'; // 用户名
     const userType = urlParams.get('type') || '类型1'; // 用户选择的类型
@@ -86,18 +70,24 @@
       "类型5": "work.jpg",
       "类型6": "success.jpg"
     };
-    typeImage.src = imageUrlMap[userType] || "default.jpg"; // 加载默认图片防止错误
+    typeImage.src = imageUrlMap[userType] || "default.jpg"; // 设置图片路径
 
-    // 使用 html2canvas 生成图片
-    document.getElementById('save-btn').addEventListener('click', () => {
-      const content = document.getElementById('content');
-      html2canvas(content, { scale: 2, useCORS: true }).then((canvas) => {
-        const link = document.createElement('a');
-        link.download = `${name}-转运签.png`;
-        link.href = canvas.toDataURL();
-        link.click();
+    // 使用 html2canvas 渲染页面为图片
+    window.onload = function () {
+      html2canvas(document.getElementById('content'), { scale: 2, useCORS: true }).then((canvas) => {
+        const imageUrl = canvas.toDataURL("image/png");
+        const img = new Image();
+        img.src = imageUrl;
+        img.style.width = "100vw";
+        img.style.height = "100vh";
+        img.style.display = "block";
+        img.style.margin = "0 auto";
+        img.setAttribute('alt', '生成的转运签图片');
+        img.setAttribute('draggable', 'false');
+        document.body.innerHTML = ""; // 清空原页面
+        document.body.appendChild(img); // 替换为可保存的图片
       });
-    });
+    };
   </script>
 </body>
 </html>

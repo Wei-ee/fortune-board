@@ -2,42 +2,33 @@
 <html lang="en">
 <head>
   <title>转运签</title>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body, html {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
-      background-color: #f3f3f3;
       font-family: Arial, sans-serif;
-      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f3f3f3;
     }
     .content {
       text-align: center;
-      background-image: url('background.png'); /* 替换为实际背景图片地址 */
-      background-size: cover;
-      background-position: center;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      overflow: hidden;
     }
     img {
       max-width: 80%;
       height: auto;
-      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="content" id="content">
-    <h1 id="name">属于用户的转运签</h1>
-    <img id="type-image" src="" alt="签类型图片" style="display: none;">
+  <div class="content">
+    <h1 id="name"></h1>
+    <img id="type-image" src="" alt="签类型图片">
   </div>
   <script>
     // 从 URL 查询参数中提取用户信息
@@ -45,35 +36,20 @@
     const name = urlParams.get('name') || '用户'; // 用户名
     const userType = urlParams.get('type') || '类型1'; // 用户选择的类型
 
-    // 动态替换内容
-    document.getElementById('name').textContent = `属于${name}的转运签`;
+    // 动态设置用户名字
+    document.getElementById('name').textContent = `属于 ${name} 的转运签`;
 
-    // 根据类型动态加载图片
+    // 根据类型加载图片
     const typeImage = document.getElementById('type-image');
-    const typeIndex = parseInt(userType.replace('类型', '')) - 1; // 将类型转换为索引
-    const imageUrl = `https://raw.githubusercontent.com/username/repo-name/main/images/type${typeIndex + 1}.png`; // 替换为您 GitHub 上的图片地址
-    typeImage.src = imageUrl;
-    typeImage.style.display = 'block'; // 显示图片
-
-    // 使用 html2canvas 渲染内容为图片
-    window.onload = function () {
-      html2canvas(document.getElementById('content'), {
-        scale: 2,
-        useCORS: true // 允许跨域加载图片
-      }).then((canvas) => {
-        const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
-        const img = new Image();
-        img.src = imageUrl;
-        img.style.width = "100vw";
-        img.style.height = "100vh";
-        img.style.display = "block";
-        img.style.margin = "0 auto";
-        img.setAttribute('alt', '生成的转运签图片');
-        img.setAttribute('draggable', 'false');
-        document.body.innerHTML = ""; // 清空页面内容
-        document.body.appendChild(img); // 将生成的图片添加到页面上，用户可以长按保存
-      });
+    const imageUrlMap = {
+      "类型1": "health.jpg",
+      "类型2": "love.jpg",
+      "类型3": "money.jpg",
+      "类型4": "save.jpg",
+      "类型5": "work.jpg",
+      "类型6": "success.jpg"
     };
+    typeImage.src = imageUrlMap[userType] || "default.jpg"; // 加载图片或显示默认图片
   </script>
 </body>
 </html>

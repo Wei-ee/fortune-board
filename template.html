@@ -11,7 +11,6 @@
       width: 100%;
       height: 100%;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       background-color: #000; /* 防止图片外有白边 */
@@ -19,7 +18,7 @@
     .content {
       position: relative;
       width: 100%;
-      height: 80%;
+      height: 100%;
       overflow: hidden;
     }
     .content img {
@@ -38,60 +37,41 @@
       color: white;
       font-size: calc(2rem + 2vw);
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    }
-    select {
-      position: relative;
-      margin-top: 20px;
-      padding: 10px;
-      font-size: 1rem;
-      border-radius: 5px;
-      border: none;
-      outline: none;
-      cursor: pointer;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="content">
-    <img id="type-image" src="health.jpg" alt="签类型图片">
+    <img id="type-image" src="default.jpg" alt="签类型图片">
     <h1 id="name">用户</h1>
   </div>
-  <select id="type-select">
-    <option value="health">健康</option>
-    <option value="love">爱情</option>
-    <option value="money">财运</option>
-    <option value="travel">出行</option>
-    <option value="work">事业</option>
-    <option value="study">学业</option>
-  </select>
-
   <script>
-    // 获取元素
-    const typeImage = document.getElementById('type-image');
-    const typeSelect = document.getElementById('type-select');
-    const nameElement = document.getElementById('name');
+    // 从 URL 查询参数中提取用户选择的数据
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name') || '用户'; // 用户名
+    const userType = urlParams.get('type') || '健康'; // 用户选择的类型（健康、爱情等）
 
-    // 用户名（你可以根据需要动态设置）
-    const userName = '用户';
-
-    // 图片路径映射
+    // 图片路径映射表
     const imageUrlMap = {
-      health: 'health.jpg',
-      love: 'love.jpg',
-      money: 'money.jpg',
-      travel: 'travel.jpg',
-      work: 'work.jpg',
-      study: 'study.jpg'
+      "健康": "health.jpg",
+      "爱情": "love.jpg",
+      "财运": "money.jpg",
+      "出行": "travel.jpg",
+      "事业": "work.jpg",
+      "学业": "study.jpg"
     };
 
-    // 设置初始内容
-    nameElement.textContent = userName;
+    // 根据用户选择更新页面内容
+    const typeImage = document.getElementById('type-image');
+    const nameElement = document.getElementById('name');
+    typeImage.src = imageUrlMap[userType] || "default.jpg";
+    nameElement.textContent = name;
 
-    // 添加事件监听器，切换选项时更新内容
-    typeSelect.addEventListener('change', (event) => {
-      const selectedType = event.target.value;
-      typeImage.src = imageUrlMap[selectedType];
-    });
+    // 添加图片加载错误处理（防止路径问题导致显示失败）
+    typeImage.onerror = () => {
+      alert("图片加载失败，请检查路径是否正确！");
+    };
   </script>
 </body>
 </html>

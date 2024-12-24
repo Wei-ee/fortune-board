@@ -32,14 +32,16 @@
     }
     .content h1 {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      left: calc((408 / 1080) * 100%);
+      top: calc((578 / 1920) * 100%);
+      width: calc((380 / 1080) * 100%);
+      height: calc((89 / 1920) * 100%);
       z-index: 2;
       color: white;
-      font-size: 3rem;
+      font-size: calc((89 / 1920) * 100vh);
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
       text-align: center;
+      line-height: calc((89 / 1920) * 100vh); /* 保持文字垂直居中 */
     }
   </style>
 </head>
@@ -55,7 +57,7 @@
     const userType = urlParams.get('type') || '类型1'; // 用户选择的类型
 
     // 动态设置用户名字
-    document.getElementById('name').textContent = `属于 ${name} 的转运签`;
+    document.getElementById('name').textContent = name;
 
     // 根据类型加载图片
     const typeImage = document.getElementById('type-image');
@@ -67,7 +69,7 @@
       "类型5": "work.jpg",
       "类型6": "success.jpg"
     };
-    typeImage.src = imageUrlMap[userType] || "default.jpg"; // 设置默认图片
+    typeImage.src = imageUrlMap[userType] || "default.jpg"; // 加载默认图片防止错误
   </script>
 </body>
 </html>

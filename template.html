@@ -13,7 +13,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #000; /* 防止图片外有白边 */
+      background-color: #000; /* 防止背景外有白边 */
     }
     .content {
       position: relative;
@@ -22,20 +22,19 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-size: cover; /* 确保图片充满屏幕 */
-      background-position: center; /* 居中显示图片 */ 
-      background-repeat: no-repeat; /* 不重复图片 */ 
+      background-size: cover; /* 确保背景图充满容器 */
+      background-position: center; /* 背景图居中显示 */
+      background-repeat: no-repeat; /* 防止背景图重复 */
+      font-size: 2em; /* 默认字体大小 */
       color: white;
-      font-size: calc((89 / 1920) * 100vh); /* 根据视口大小调整字体 */
       font-family: sans-serif;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* 增加文字阴影效果 */
     }
   </style>
 </head>
 <body>
   <div class="content" id="content">
-    用户名加载中...
+    加载中...
   </div>
   <script>
     // 从 URL 查询参数中提取用户信息
@@ -43,21 +42,34 @@
     const name = urlParams.get('name') || '用户'; // 用户名
     const userType = urlParams.get('type') || '类型1'; // 用户选择的类型
 
-    // 根据类型选择背景图片
+    // 根据类型设置背景图路径
     const imageUrlMap = {
       "类型1": "health.jpg",
       "类型2": "love.jpg",
       "类型3": "money.jpg",
       "类型4": "save.jpg",
       "类型5": "work.jpg",
-      "类型6": "study.jpg"
+      "类型6": "success.jpg"
     };
     const imageUrl = imageUrlMap[userType] || "default.jpg";
 
-    // 动态设置背景和用户名
+    // 获取内容容器
     const contentDiv = document.getElementById('content');
+
+    // 动态设置背景图片和用户名
     contentDiv.style.backgroundImage = `url('${imageUrl}')`;
     contentDiv.textContent = name;
+
+    // 添加图片加载错误处理
+    const imgTest = new Image();
+    imgTest.src = imageUrl;
+    imgTest.onload = () => {
+      console.log('背景图片加载成功');
+    };
+    imgTest.onerror = () => {
+      console.error('背景图片加载失败，请检查路径或文件名是否正确');
+      contentDiv.style.backgroundImage = `url('default.jpg')`; // 回退到默认背景
+    };
   </script>
 </body>
 </html>

@@ -4,23 +4,21 @@
   <title>转运签</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     body, html {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
-      font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #000; /* 防止白边 */
+      background-color: #000; /* 防止图片外有白边 */
     }
     .content {
       position: relative;
-      width: 1080px; /* 背景图片原始宽度 */
-      height: 1920px; /* 背景图片原始高度 */
+      width: 100%;
+      height: 100%;
       overflow: hidden;
     }
     .content img {
@@ -29,31 +27,32 @@
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover; /* 保持比例裁剪适配 */
+      object-fit: cover; /* 确保图片充满屏幕并裁剪 */
       z-index: 1;
     }
     .content h1 {
       position: absolute;
-      left: 408px;
-      top: 578px;
-      width: 380px;
-      height: 89px;
-      font-size: 48px;
-      line-height: 89px;
+      left: calc((380 / 1080) * 100%);
+      top: calc((550 / 1920) * 100%);
+      width: calc((350 / 1080) * 100%);
+      height: calc((60 / 1920) * 100%);
+      height: calc((30 / 1920) * 100%);
+      z-index: 2;
       color: white;
-      text-align: center;
+      font-size: calc((89 / 1920) * 100vh);
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-      z-index: 2; /* 确保文字在图片上方 */
+      text-align: center;
+      line-height: calc((89 / 1920) * 100vh); /* 保持文字垂直居中 */
     }
   </style>
 </head>
 <body>
-  <div class="content" id="content">
+  <div class="content">
     <img id="type-image" src="" alt="签类型图片">
     <h1 id="name"></h1>
   </div>
   <script>
-    // 获取 URL 查询参数
+    // 从 URL 查询参数中提取用户信息
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户'; // 用户名
     const userType = urlParams.get('type') || '类型1'; // 用户选择的类型
@@ -71,24 +70,7 @@
       "类型5": "work.jpg",
       "类型6": "success.jpg"
     };
-    typeImage.src = imageUrlMap[userType] || "default.jpg"; // 加载图片路径
-
-    // 使用 html2canvas 渲染页面为图片
-    window.onload = function () {
-      html2canvas(document.getElementById('content'), { scale: 2, useCORS: true }).then((canvas) => {
-        const imageUrl = canvas.toDataURL("image/png");
-        const img = new Image();
-        img.src = imageUrl;
-        img.style.width = "100vw"; // 自适应宽度
-        img.style.height = "100vh"; // 自适应高度
-        img.style.display = "block";
-        img.style.margin = "0 auto";
-        img.setAttribute('alt', '生成的转运签图片');
-        img.setAttribute('draggable', 'false');
-        document.body.innerHTML = ""; // 清空原页面
-        document.body.appendChild(img); // 替换为渲染后的图片
-      });
-    };
+    typeImage.src = imageUrlMap[userType] || "default.jpg"; // 加载默认图片防止错误
   </script>
 </body>
 </html>

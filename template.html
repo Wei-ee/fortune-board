@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>转运签</title>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -19,7 +19,7 @@
       background-size: cover;
       background-position: center;
       width: 100vw;
-      height: 100vh; /* 将高度调整为100vh，适应屏幕高度 */
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -27,22 +27,33 @@
       color: white;
       overflow: hidden;
     }
+    img {
+      max-width: 80%;
+      height: auto;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="content" id="content">
     <h1 id="name">属于用户的转运签</h1>
-    <p id="blessing">祝您好运!</p>
+    <img id="type-image" src="" alt="签类型图片" style="display: none;">
   </div>
   <script>
     // 从 URL 查询参数中提取用户信息
     const urlParams = new URLSearchParams(window.location.search);
-    const name = urlParams.get('name') || '用户'; // 默认名字
-    const blessing = urlParams.get('blessing') || '祝您好运!';
+    const name = urlParams.get('name') || '用户'; // 用户名
+    const userType = urlParams.get('type') || '类型1'; // 用户选择的类型
 
     // 动态替换内容
     document.getElementById('name').textContent = `属于${name}的转运签`;
-    document.getElementById('blessing').textContent = blessing;
+
+    // 根据类型动态加载图片
+    const typeImage = document.getElementById('type-image');
+    const typeIndex = parseInt(userType.replace('类型', '')) - 1; // 将类型转换为索引
+    const imageUrl = `https://raw.githubusercontent.com/username/repo-name/main/images/type${typeIndex + 1}.png`; // 替换为您 GitHub 上的图片地址
+    typeImage.src = imageUrl;
+    typeImage.style.display = 'block'; // 显示图片
 
     // 使用 html2canvas 渲染内容为图片
     window.onload = function () {
@@ -51,10 +62,10 @@
         useCORS: true // 允许跨域加载图片
       }).then((canvas) => {
         const imageUrl = canvas.toDataURL("image/png"); // 转为图片 URL
-        const img = new Image(); // 使用 Image 对象
+        const img = new Image();
         img.src = imageUrl;
-        img.style.width = "100vw"; // 让图片适配屏幕宽度
-        img.style.height = "100vh"; // 保持图片高度适配屏幕高度
+        img.style.width = "100vw";
+        img.style.height = "100vh";
         img.style.display = "block";
         img.style.margin = "0 auto";
         img.setAttribute('alt', '生成的转运签图片');

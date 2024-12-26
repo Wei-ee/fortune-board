@@ -4,6 +4,7 @@
   <title>转运签</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body, html {
       margin: 0;
@@ -17,8 +18,8 @@
     }
     .content {
       position: relative;
-      width: 100%;
-      height: 100%;
+      width: 1080px; /* 设置生成图片的固定宽度 */
+      height: 1920px; /* 设置生成图片的固定高度 */
       overflow: hidden;
     }
     .content img {
@@ -39,13 +40,28 @@
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
       text-align: center;
     }
+    .save-button {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 10;
+    }
   </style>
 </head>
 <body>
-  <div class="content">
+  <div class="content" id="capture-area">
     <img id="type-image" src="default.jpg" alt="签类型图片">
     <h1 id="name">用户</h1>
   </div>
+  <button class="save-button" id="save-button">保存图片</button>
   <script>
     // 从 URL 查询参数中提取用户选择的数据
     const urlParams = new URLSearchParams(window.location.search);
@@ -72,6 +88,18 @@
     typeImage.onerror = () => {
       alert("图片加载失败，请检查路径是否正确！");
     };
+
+    // 保存为图片功能
+    const saveButton = document.getElementById('save-button');
+    const captureArea = document.getElementById('capture-area');
+    saveButton.addEventListener('click', () => {
+      html2canvas(captureArea).then((canvas) => {
+        const link = document.createElement('a');
+        link.download = `${name}-${userType}.png`; // 文件名
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    });
   </script>
 </body>
 </html>

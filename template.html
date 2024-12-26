@@ -11,15 +11,12 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       background-color: #000; /* 防止图片外有白边 */
     }
     .content {
       position: relative;
-      width: 1080px; /* 设置生成图片的固定宽度 */
-      height: 1920px; /* 设置生成图片的固定高度 */
+      width: 1080px; /* 固定图片宽度 */
+      height: 1920px; /* 固定图片高度 */
       overflow: hidden;
     }
     .content img {
@@ -36,23 +33,9 @@
       left: 50%;
       transform: translate(-50%, -50%);
       color: white;
-      font-size: calc(2rem + 2vw);
+      font-size: 72px; /* 固定字体大小，避免比例问题 */
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
       text-align: center;
-    }
-    .save-button {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 20px;
-      font-size: 1rem;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 10;
     }
   </style>
 </head>
@@ -61,7 +44,6 @@
     <img id="type-image" src="default.jpg" alt="签类型图片">
     <h1 id="name">用户</h1>
   </div>
-  <button class="save-button" id="save-button">保存图片</button>
   <script>
     // 从 URL 查询参数中提取用户选择的数据
     const urlParams = new URLSearchParams(window.location.search);
@@ -89,17 +71,23 @@
       alert("图片加载失败，请检查路径是否正确！");
     };
 
-    // 保存为图片功能
-    const saveButton = document.getElementById('save-button');
-    const captureArea = document.getElementById('capture-area');
-    saveButton.addEventListener('click', () => {
-      html2canvas(captureArea).then((canvas) => {
-        const link = document.createElement('a');
-        link.download = `${name}-${userType}.png`; // 文件名
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+    // 自动生成合成图片并显示
+    window.onload = () => {
+      const captureArea = document.getElementById('capture-area');
+      html2canvas(captureArea, { useCORS: true, scale: 1 }).then((canvas) => {
+        const imageUrl = canvas.toDataURL("image/png");
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.style.width = "100%"; // 调整显示为全屏宽
+        img.style.height = "auto"; // 保持图片比例
+        img.alt = "生成的签图片";
+
+        // 替换页面内容为生成的图片
+        document.body.innerHTML = "";
+        document.body.style.margin = "0";
+        document.body.appendChild(img);
       });
-    });
+    };
   </script>
 </body>
 </html>

@@ -29,10 +29,9 @@
     }
     .content h1 {
       position: absolute;
-      top: 50%;
+      top: 40%; /* 调整文字的垂直位置 */
       left: 50%;
       transform: translate(-50%, -50%);
-      color: white;
       font-size: 72px; /* 固定字体大小，避免比例问题 */
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
       text-align: center;
@@ -50,21 +49,25 @@
     const name = urlParams.get('name') || '用户'; // 用户名
     const userType = urlParams.get('type') || '健康'; // 用户选择的类型（健康、爱情等）
 
-    // 图片路径映射表
-    const imageUrlMap = {
-      "健康": "health.jpg",
-      "爱情": "love.jpg",
-      "财运": "money.jpg",
-      "出行": "travel.jpg",
-      "事业": "work.jpg",
-      "学业": "study.jpg"
+    // 图片路径和字体颜色映射表
+    const imageStyleMap = {
+      "健康": { img: "health.jpg", color: "#FFFFFF" },
+      "爱情": { img: "love.jpg", color: "#FFC0CB" },
+      "财运": { img: "money.jpg", color: "#FFD700" },
+      "出行": { img: "travel.jpg", color: "#87CEEB" },
+      "事业": { img: "work.jpg", color: "#FFFFFF" },
+      "学业": { img: "study.jpg", color: "#00FF00" }
     };
 
     // 根据用户选择更新页面内容
     const typeImage = document.getElementById('type-image');
     const nameElement = document.getElementById('name');
-    typeImage.src = imageUrlMap[userType] || "default.jpg";
+    const styleData = imageStyleMap[userType] || { img: "default.jpg", color: "#FFFFFF" };
+
+    // 设置背景图片和字体颜色
+    typeImage.src = styleData.img;
     nameElement.textContent = name;
+    nameElement.style.color = styleData.color;
 
     // 添加图片加载错误处理（防止路径问题导致显示失败）
     typeImage.onerror = () => {

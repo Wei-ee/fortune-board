@@ -6,6 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
+    /* 引入自定义字体 */
+    @font-face {
+      font-family: 'CustomFont';
+      src: url('./ExtraLight.otf') format('opentype');
+    }
+
     body, html {
       margin: 0;
       padding: 0;
@@ -33,9 +39,26 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: calc(18px + 1vw);
-      font-family: Arial, sans-serif;
+      font-family: 'CustomFont', sans-serif; /* 使用自定义字体 */
       text-align: center;
+    }
+    #save-btn {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 16px;
+      font-family: 'CustomFont', sans-serif;
       color: #fff;
+      background-color: #28a745;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
+    }
+    #save-btn:hover {
+      background-color: #218838;
     }
   </style>
 </head>
@@ -44,6 +67,7 @@
     <img id="type-image" src="https://your-server-path/default.jpg" alt="签类型图片">
     <h1 id="name">用户</h1>
   </div>
+  <button id="save-btn">保存图片</button>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户';
@@ -72,24 +96,41 @@
 
     window.onload = () => {
       const captureArea = document.getElementById('capture-area');
+      const saveButton = document.getElementById('save-btn');
+
+      // 动态调整截图区域大小
+      captureArea.style.width = `${window.innerWidth}px`;
+      captureArea.style.height = `${window.innerHeight}px`;
 
       html2canvas(captureArea, { useCORS: true, scale: window.devicePixelRatio }).then((canvas) => {
         const imageUrl = canvas.toDataURL("image/png");
 
-        // 直接替换页面内容，展示生成的图片
+        // 显示保存按钮
+        saveButton.style.display = "block";
+
+        saveButton.onclick = () => {
+          canvas.toBlob((blob) => {
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `${name}-${userType}.png`;
+            link.click();
+            URL.revokeObjectURL(url); // 释放 URL 对象
+          });
+        };
+
+        // 将截图显示在页面中
         const img = document.createElement('img');
         img.src = imageUrl;
         img.style.objectFit = "cover";
         img.style.width = "100vw";
         img.style.height = "100vh";
-        img.alt = "长按保存到相册";
+        img.alt = "生成的签图片";
 
-        document.body.innerHTML = ""; // 清空页面
+        document.body.innerHTML = "";
         document.body.style.margin = "0";
-        document.body.style.backgroundColor = "#000";
         document.body.appendChild(img);
-
-        alert("长按图片保存到相册");
+        document.body.appendChild(saveButton);
       });
     };
   </script>

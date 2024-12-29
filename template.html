@@ -64,27 +64,27 @@
 </head>
 <body>
   <div class="content" id="capture-area">
-    <img id="type-image" src="default.jpg" alt="签类型图片">
+    <img id="type-image" src="https://your-server-path/default.jpg" alt="签类型图片">
     <h1 id="name">用户</h1>
   </div>
-  <button id="save-btn">保存分享</button>
+  <button id="save-btn">保存图片</button>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户';
     const userType = urlParams.get('type') || '健康';
 
     const imageStyleMap = {
-      "健康": { img: "health.jpg", color: "#E95504" },
-      "爱情": { img: "love.jpg", color: "#BC1E7D" },
-      "财运": { img: "money.jpg", color: "#BB9912" },
-      "平安": { img: "travel.jpg", color: "#E95504" },
-      "事业": { img: "work.jpg", color: "#B28C12" },
-      "学业": { img: "study.jpg", color: "#00B3EA" }
+      "健康": { img: "https://your-server-path/health.jpg", color: "#E95504" },
+      "爱情": { img: "https://your-server-path/love.jpg", color: "#BC1E7D" },
+      "财运": { img: "https://your-server-path/money.jpg", color: "#BB9912" },
+      "平安": { img: "https://your-server-path/travel.jpg", color: "#E95504" },
+      "事业": { img: "https://your-server-path/work.jpg", color: "#B28C12" },
+      "学业": { img: "https://your-server-path/study.jpg", color: "#00B3EA" }
     };
 
     const typeImage = document.getElementById('type-image');
     const nameElement = document.getElementById('name');
-    const styleData = imageStyleMap[userType] || { img: "default.jpg", color: "#FFFFFF" };
+    const styleData = imageStyleMap[userType] || { img: "https://your-server-path/default.jpg", color: "#FFFFFF" };
 
     typeImage.src = styleData.img;
     nameElement.textContent = name;

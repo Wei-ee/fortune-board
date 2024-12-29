@@ -74,6 +74,7 @@
 
     const typeImage = document.getElementById('type-image');
     const nameElement = document.getElementById('name');
+    const hintImage = document.getElementById('hint-img');
     const styleData = imageStyleMap[userType] || { img: "default.jpg", color: "#FFFFFF" };
 
     typeImage.src = styleData.img;
@@ -86,6 +87,9 @@
 
     window.onload = () => {
       const captureArea = document.getElementById('capture-area');
+
+      // 在截图前隐藏提示图片
+      hintImage.style.display = 'none';
 
       // 动态调整截图区域大小
       captureArea.style.width = `${window.innerWidth}px`;
@@ -104,6 +108,9 @@
 
         captureArea.innerHTML = "";
         captureArea.appendChild(img);
+
+        // 恢复提示图片的显示
+        hintImage.style.display = 'block';
       });
     };
   </script>

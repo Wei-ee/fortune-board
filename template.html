@@ -42,23 +42,6 @@
       font-family: 'CustomFont', sans-serif; /* 使用自定义字体 */
       text-align: center;
     }
-    #download-btn {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 20px;
-      font-size: 16px;
-      font-family: 'CustomFont', sans-serif;
-      color: #fff;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #download-btn:hover {
-      background-color: #0056b3;
-    }
   </style>
 </head>
 <body>
@@ -66,7 +49,6 @@
     <img id="type-image" src="default.jpg" alt="签类型图片">
     <h1 id="name">用户</h1>
   </div>
-  <button id="download-btn" style="display: none;">下载图片</button>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户';
@@ -95,7 +77,6 @@
 
     window.onload = () => {
       const captureArea = document.getElementById('capture-area');
-      const downloadButton = document.getElementById('download-btn');
 
       // 动态调整截图区域大小
       captureArea.style.width = `${window.innerWidth}px`;
@@ -104,14 +85,11 @@
       html2canvas(captureArea, { useCORS: true, scale: window.devicePixelRatio }).then((canvas) => {
         const imageUrl = canvas.toDataURL("image/png");
 
-        // 设置下载按钮
-        downloadButton.style.display = "block";
-        downloadButton.onclick = () => {
-          const link = document.createElement('a');
-          link.href = imageUrl;
-          link.download = `${name}-${userType}.png`;
-          link.click();
-        };
+        // 自动触发下载
+        const link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = `${name}-${userType}.png`;
+        link.click();
 
         // 将截图显示在页面中
         const img = document.createElement('img');
@@ -124,7 +102,6 @@
         document.body.innerHTML = "";
         document.body.style.margin = "0";
         document.body.appendChild(img);
-        document.body.appendChild(downloadButton);
       });
     };
   </script>

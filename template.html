@@ -42,24 +42,6 @@
       font-family: 'CustomFont', sans-serif; /* 使用自定义字体 */
       text-align: center;
     }
-    #save-btn {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 20px;
-      font-size: 16px;
-      font-family: 'CustomFont', sans-serif;
-      color: #fff;
-      background-color: #28a745;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      display: none;
-    }
-    #save-btn:hover {
-      background-color: #218838;
-    }
     #hint-img {
       position: absolute;
       top: 10px;
@@ -76,7 +58,6 @@
     <h1 id="name">用户</h1>
   </div>
   <img id="hint-img" src="hint.png" alt="保存提示">
-  <button id="save-btn">保存图片</button>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户';
@@ -105,7 +86,6 @@
 
     window.onload = () => {
       const captureArea = document.getElementById('capture-area');
-      const saveButton = document.getElementById('save-btn');
 
       // 动态调整截图区域大小
       captureArea.style.width = `${window.innerWidth}px`;
@@ -114,32 +94,16 @@
       html2canvas(captureArea, { useCORS: true, scale: window.devicePixelRatio }).then((canvas) => {
         const imageUrl = canvas.toDataURL("image/png");
 
-        // 显示保存按钮
-        saveButton.style.display = "block";
-
-        saveButton.onclick = () => {
-          canvas.toBlob((blob) => {
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = `${name}-${userType}.png`;
-            link.click();
-            URL.revokeObjectURL(url); // 释放 URL 对象
-          });
-        };
-
-        // 将截图显示在页面中
+        // 替换截图区域内容为生成的图片
         const img = document.createElement('img');
         img.src = imageUrl;
         img.style.objectFit = "cover";
-        img.style.width = "100vw";
-        img.style.height = "100vh";
+        img.style.width = "100%";
+        img.style.height = "100%";
         img.alt = "生成的签图片";
 
-        document.body.innerHTML = "";
-        document.body.style.margin = "0";
-        document.body.appendChild(img);
-        document.body.appendChild(saveButton);
+        captureArea.innerHTML = "";
+        captureArea.appendChild(img);
       });
     };
   </script>

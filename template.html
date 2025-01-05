@@ -4,28 +4,21 @@
   <title>转运签</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- 预加载图片 -->
-  <link rel="preload" as="image" href="health.jpg">
-  <link rel="preload" as="image" href="love.jpg">
-  <link rel="preload" as="image" href="money.jpg">
-  <link rel="preload" as="image" href="travel.jpg">
-  <link rel="preload" as="image" href="work.jpg">
-  <link rel="preload" as="image" href="study.jpg">
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
   <style>
+    /* 引入自定义字体 */
     @font-face {
       font-family: 'CustomFont';
       src: url('./ExtraLight.otf') format('opentype');
     }
+
+    
     body, html {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
-      background-color: #333; /* 默认背景色 */
+      background-color: #000;
     }
     .content {
       position: relative;
@@ -40,11 +33,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0; /* 初始不可见 */
-      transition: opacity 0.5s ease-in-out; /* 加载完成后渐变显示 */
-    }
-    .loaded {
-      opacity: 1; /* 图片加载完成后显示 */
     }
     .content h1 {
       position: absolute;
@@ -52,9 +40,8 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: calc(18px + 1vw);
-      font-family: 'CustomFont', sans-serif;
+      font-family: 'CustomFont', sans-serif; /* 使用自定义字体 */
       text-align: center;
-      color: #fff;
     }
     #hint-img {
       position: absolute;
@@ -68,11 +55,10 @@
 </head>
 <body>
   <div class="content" id="capture-area">
-    <img id="type-image" src="health.jpg" alt="签类型图片">
+    <img id="type-image" src="default.jpg" alt="签类型图片">
     <h1 id="name">用户</h1>
   </div>
   <img id="hint-img" src="hint.png" alt="保存提示">
-
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name') || '用户';
@@ -87,21 +73,15 @@
       "学业": { img: "study.jpg", color: "#00B3EA" }
     };
 
-    // 设置默认图片为 "健康"
-    const styleData = imageStyleMap[userType] || imageStyleMap["健康"];
-
     const typeImage = document.getElementById('type-image');
     const nameElement = document.getElementById('name');
     const hintImage = document.getElementById('hint-img');
+    const styleData = imageStyleMap[userType] || { img: "default.jpg", color: "#FFFFFF" };
 
-    typeImage.src = styleData.img; // 设置图片路径
+    typeImage.src = styleData.img;
     nameElement.textContent = name;
     nameElement.style.color = styleData.color;
 
-    // 显示加载效果
-    typeImage.onload = () => {
-      typeImage.classList.add('loaded'); // 图片加载完成后显示
-    };
     typeImage.onerror = () => {
       alert("图片加载失败，请检查路径是否正确！");
     };

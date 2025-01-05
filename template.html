@@ -5,8 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- 预加载图片 -->
-  <link rel="preload" as="image" href="default.jpg">
+  <!-- 预加载其他图片 -->
   <link rel="preload" as="image" href="health.jpg">
   <link rel="preload" as="image" href="love.jpg">
   <link rel="preload" as="image" href="money.jpg">
@@ -69,7 +68,7 @@
 </head>
 <body>
   <div class="content" id="capture-area">
-    <img id="type-image" src="default.jpg" alt="签类型图片">
+    <img id="type-image" src="health.jpg" alt="签类型图片">
     <h1 id="name">用户</h1>
   </div>
   <img id="hint-img" src="hint.png" alt="保存提示">
@@ -88,10 +87,12 @@
       "学业": { img: "study.jpg", color: "#00B3EA" }
     };
 
+    // 设置默认图片为 "健康"
+    const styleData = imageStyleMap[userType] || imageStyleMap["健康"];
+
     const typeImage = document.getElementById('type-image');
     const nameElement = document.getElementById('name');
     const hintImage = document.getElementById('hint-img');
-    const styleData = imageStyleMap[userType] || { img: "default.jpg", color: "#FFFFFF" };
 
     typeImage.src = styleData.img; // 设置图片路径
     nameElement.textContent = name;
